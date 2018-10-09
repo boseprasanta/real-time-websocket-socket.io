@@ -9,12 +9,12 @@ app.use(express.static(publicPath));
 var server = http.createServer(app);
 
 var io = socketIO(server);
-var i=0;
 io.on('connection',(socket)=>{
     console.log("New Client Connected.");
     socket.on('disconnect',()=>{
         console.log("Client DisConnected.");
     });
+    socket.emit('newEmail',{ name : "Prasanta Bose" , email : "prasanta@cashlu.com" });
 });
 
 server.listen(port,()=>{
