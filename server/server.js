@@ -14,7 +14,12 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         console.log("Client DisConnected.");
     });
-    socket.emit('newEmail',{ name : "Prasanta Bose" , email : "prasanta@cashlu.com" });
+
+    socket.on('createMessage',(message)=>{
+        console.log("New Mesage Created");
+        console.log(message);
+        socket.emit('newMessage',message);
+    });
 });
 
 server.listen(port,()=>{
