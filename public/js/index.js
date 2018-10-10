@@ -10,13 +10,20 @@ socket.on('connect',()=>{
 socket.on('disconnect',()=>{
     console.log("Server DisConnected.");
 });
-
-socket.on('newEmail',function(email){
-    console.log('New Email');
-    console.log(email);
+socket.on('newMessage',function(message){
+    let li = $('<li></li>');
+    li.text(`${message.from} : ${message.text}`);
+    $('#messages').append(li);
 })
 
-socket.on('newMessage',function(message){
-    console.log('New Message Received');
-    console.log(message);
+$('#message-form').on('submit',function(e){
+    e.preventDefault();
+
+    socket.emit('createMessage',{
+        from : $('input[name="username"]').val(),
+        text : $('input[name="message"]').val()
+    },(data)=>{
+        $('input[name="message"]').val('')
+        console.log(data);
+    })
 })

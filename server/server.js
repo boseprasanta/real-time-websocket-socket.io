@@ -18,7 +18,13 @@ io.on('connection',(socket)=>{
         console.log("Client DisConnected.");
     });
 
-    socket.on('createMessage',(message)=>{
+
+    socket.on('createMessage',(message,callback)=>{
+        /* Sent Message can be invalid to prevent it we need Event Acknowledgement
+            for that add a callback function in argement inside the listener and call it callback() to 
+            acknoledge the receipt
+        */
+        callback('This is from server');
         io.emit('newMessage',generateMessage(message.from,message.text));
         // Socket.emit goes to a single connection
         // io.emit goes to a single connection
