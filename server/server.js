@@ -8,19 +8,18 @@ const port = process.env.PORT || 3000;
 app.use(express.static(publicPath));
 var server = http.createServer(app);
 
+const {generateMessage} = require("./utils/message");
+
 var io = socketIO(server);
 io.on('connection',(socket)=>{
-    socket.emit('newMessage',{ from : "Admin" , message : "Welcome to the caht room." })
-    socket.broadcast.emit('newMessage',{ from : "Admin" , message : "New User Joined." })
+    socket.emit('newMessage',generateMessage("Admin","Welcome To The chat room."));
+    socket.broadcast.emit('newMessage',generateMessage("Admin","New User Joined."))
     socket.on('disconnect',()=>{
         console.log("Client DisConnected.");
     });
 
     socket.on('createMessage',(message)=>{
-        io.emit('newMessage',{
-            from : message.from,
-            text: message.text
-        });
+        io.emit('newMessage',generateMessage(message.from,message.text));
         // Socket.emit goes to a single connection
         // io.emit goes to a single connection
         // socket.broadcast.emit('newMessage',message);
