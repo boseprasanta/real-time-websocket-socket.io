@@ -10,15 +10,20 @@ var server = http.createServer(app);
 
 var io = socketIO(server);
 io.on('connection',(socket)=>{
-    console.log("New Client Connected.");
+    socket.emit('newMessage',{ from : "Admin" , message : "Welcome to the caht room." })
+    socket.broadcast.emit('newMessage',{ from : "Admin" , message : "New User Joined." })
     socket.on('disconnect',()=>{
         console.log("Client DisConnected.");
     });
 
     socket.on('createMessage',(message)=>{
-        console.log("New Mesage Created");
-        console.log(message);
-        socket.emit('newMessage',message);
+        io.emit('newMessage',{
+            from : message.from,
+            text: message.text
+        });
+        // Socket.emit goes to a single connection
+        // io.emit goes to a single connection
+        // socket.broadcast.emit('newMessage',message);
     });
 });
 
