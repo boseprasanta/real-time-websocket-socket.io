@@ -20,10 +20,24 @@ $('#message-form').on('submit',function(e){
     e.preventDefault();
 
     socket.emit('createMessage',{
-        from : $('input[name="username"]').val(),
+        from : "USER",
         text : $('input[name="message"]').val()
     },(data)=>{
         $('input[name="message"]').val('')
         console.log(data);
     })
-})
+});
+
+let shareLocationButton = $('#send-location');
+
+shareLocationButton.on("click",function(){
+    if(!navigator.geolocation){
+        alert("Your browser doesn't support geolocation");
+    }
+
+    navigator.geolocation.getCurrentPosition((position)=>{
+        console.log(position);
+    },()=>{
+        alert("Something went worng");
+    },{timeout:10000});
+});
