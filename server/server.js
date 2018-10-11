@@ -18,6 +18,9 @@ io.on('connection',(socket)=>{
         console.log("Client DisConnected.");
     });
 
+    socket.on('createLocationMessage',(position)=>{
+        io.emit('newMessage',generateMessage("User",`latitude:${position.latitude} | longitude:${position.longitude}`))
+    })
 
     socket.on('createMessage',(message,callback)=>{
         /* Sent Message can be invalid to prevent it we need Event Acknowledgement

@@ -34,9 +34,11 @@ shareLocationButton.on("click",function(){
     if(!navigator.geolocation){
         alert("Your browser doesn't support geolocation");
     }
-
     navigator.geolocation.getCurrentPosition((position)=>{
-        console.log(position);
+        socket.emit("createLocationMessage",{
+            latitude : position.coords.latitude,
+            longitude : position.coords.longitude
+        })
     },()=>{
         alert("Something went worng");
     },{timeout:10000});
