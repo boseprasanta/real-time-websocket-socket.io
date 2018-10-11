@@ -19,7 +19,7 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('createLocationMessage',(position)=>{
-        io.emit('newMessage',generateMessage("User",`latitude:${position.latitude} | longitude:${position.longitude}`))
+        io.emit('newLocationMessage',generateMessage("User",`${position.latitude},${position.longitude}`))
     })
 
     socket.on('createMessage',(message,callback)=>{

@@ -15,6 +15,11 @@ socket.on('newMessage',function(message){
     li.text(`${message.from} : ${message.text}`);
     $('#messages').append(li);
 })
+socket.on('newLocationMessage',function(message){
+    let li = $('<li></li>');
+    li.text(`${message.from} : <a href='https://www.google.com/maps?q=${message.text}' >Map</a>`);
+    $('#messages').append(li);
+})
 
 $('#message-form').on('submit',function(e){
     e.preventDefault();
