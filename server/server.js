@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 app.use(express.static(publicPath));
 var server = http.createServer(app);
 
-const {generateMessage} = require("./utils/message");
+const {generateMessage,generateLocationMessage} = require("./utils/message");
 
 var io = socketIO(server);
 io.on('connection',(socket)=>{
@@ -19,7 +19,7 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('createLocationMessage',(position)=>{
-        io.emit('newLocationMessage',generateMessage("User",`${position.latitude},${position.longitude}`))
+        io.emit('newLocationMessage',generateLocationMessage("User",`${position.latitude},${position.longitude}`))
     })
 
     socket.on('createMessage',(message,callback)=>{

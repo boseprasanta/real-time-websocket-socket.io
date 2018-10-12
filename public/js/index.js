@@ -17,7 +17,12 @@ socket.on('newMessage',function(message){
 })
 socket.on('newLocationMessage',function(message){
     let li = $('<li></li>');
-    li.html(`${message.from} : <a href='https://www.google.com/maps?q=${message.text}' >Map</a>`);
+    let a = $('<a target="_blank">My Curreent Location</a>');
+
+    li.text(`${message.from}`);
+    a.attr('href',message.url);
+    li.append(a);
+
     $('#messages').append(li);
 })
 
