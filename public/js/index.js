@@ -29,12 +29,13 @@ socket.on('newLocationMessage',function(message){
 $('#message-form').on('submit',function(e){
     e.preventDefault();
 
+    let messageTextBox = $('input[name="message"]');
+
     socket.emit('createMessage',{
         from : "USER",
-        text : $('input[name="message"]').val()
+        text : messageTextBox.val()
     },(data)=>{
-        $('input[name="message"]').val('')
-        console.log(data);
+        messageTextBox.val('');
     })
 });
 
@@ -42,14 +43,19 @@ let shareLocationButton = $('#send-location');
 
 shareLocationButton.on("click",function(){
     if(!navigator.geolocation){
-        alert("Your browser doesn't support geolocation");
+        return alert("Your browser doesn't support geolocation");
     }
+
+    shareLocationButton.attr('disabled','disabled').text('Sending Location ...');
+
     navigator.geolocation.getCurrentPosition((position)=>{
+        shareLocationButton.removeAttr('disabled').text('Send Location');
         socket.emit("createLocationMessage",{
             latitude : position.coords.latitude,
             longitude : position.coords.longitude
         })
     },()=>{
+        shareLocationButton.removeAttr('disabled').text('Send Location');
         alert("Something went worng");
     },{timeout:10000});
 });

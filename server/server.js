@@ -27,7 +27,7 @@ io.on('connection',(socket)=>{
             for that add a callback function in argement inside the listener and call it callback() to 
             acknoledge the receipt
         */
-        callback('This is from server');
+        callback();
         io.emit('newMessage',generateMessage(message.from,message.text));
         // Socket.emit goes to a single connection
         // io.emit goes to a single connection
