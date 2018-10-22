@@ -11,6 +11,7 @@ socket.on('disconnect',()=>{
     console.log("Server DisConnected.");
 });
 socket.on('newMessage',function(message){
+    console.log(message);
     let formatedTime = moment(message.createdAt).format('hh:mm a');
     // let li = $('<li></li>');
     // li.text(`${message.from} ${formatedTime} : ${message.text}`);
@@ -26,7 +27,7 @@ socket.on('newLocationMessage',function(message){
     let formatedTimeLoc = moment(message.createdAt).format('hh:mm a');
     // let li = $('<li></li>');
     // let a = $('<a target="_blank">My Current Location</a>');
-    let template = $("#message-template").html();
+    let template = $("#location-message-template").html();
     let html = Mustache.render(template,{
         from : message.from,
         createdAt : formatedTime,
