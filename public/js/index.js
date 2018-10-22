@@ -11,15 +11,17 @@ socket.on('disconnect',()=>{
     console.log("Server DisConnected.");
 });
 socket.on('newMessage',function(message){
+    let formatedTime = moment(message.createdAt).format('hh:mm a');
     let li = $('<li></li>');
-    li.text(`${message.from} : ${message.text}`);
+    li.text(`${message.from} ${formatedTime} : ${message.text}`);
     $('#messages').append(li);
 })
 socket.on('newLocationMessage',function(message){
+    let formatedTimeLoc = moment(message.createdAt).format('hh:mm a');
     let li = $('<li></li>');
     let a = $('<a target="_blank">My Curreent Location</a>');
 
-    li.text(`${message.from}`);
+    li.text(`${message.from} ${formatedTimeLoc}`);
     a.attr('href',message.url);
     li.append(a);
 
