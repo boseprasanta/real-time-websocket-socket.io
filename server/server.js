@@ -42,8 +42,8 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('createLocationMessage',(position)=>{
-        let user = users.getUser(socket.id);
-        if(user && isRealString(message.text)){
+        var user = users.getUser(socket.id);
+        if(user){
             io.to(user.room).emit('newLocationMessage',generateLocationMessage(user.name,position.latitude,position.longitude));
         }
         
@@ -54,7 +54,7 @@ io.on('connection',(socket)=>{
             for that add a callback function in argement inside the listener and call it callback() to 
             acknoledge the receipt
         */
-        let user = users.getUser(socket.id);
+        var user = users.getUser(socket.id);
 
         if(user && isRealString(message.text)){
             io.to(user.room).emit('newMessage',generateMessage(user.name,message.text));
