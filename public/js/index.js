@@ -1,4 +1,18 @@
 var socket = io();//Open a connection to server and keep it open.
+
+function scrollToBottom(){
+    let messages = $("#messages");
+    let  newMessage = messages.children('li:last-child');
+    let clientHeight = messages.prop('clientHeight'),
+        scrollTop = messages.prop('scrollTop'),
+        scrollHeight = messages.prop('scrollHeight'),
+        newMessageHeight = newMessage.innerHeight(),
+        lastMessageHeight = newMessage.prev().innerHeight();
+
+    if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight){
+        messages.scrollTop(scrollHeight);
+    }
+}
 socket.on('connect',()=>{
     console.log("Server Connected.");
     socket.emit('createEmail',{
@@ -11,7 +25,6 @@ socket.on('disconnect',()=>{
     console.log("Server DisConnected.");
 });
 socket.on('newMessage',function(message){
-    console.log(message);
     let formatedTime = moment(message.createdAt).format('hh:mm a');
     // let li = $('<li></li>');
     // li.text(`${message.from} ${formatedTime} : ${message.text}`);
@@ -22,6 +35,7 @@ socket.on('newMessage',function(message){
         text :message.text
     });
     $('#messages').append(html);
+    scrollToBottom();
 })
 socket.on('newLocationMessage',function(message){
     let formatedTimeLoc = moment(message.createdAt).format('hh:mm a');
@@ -34,6 +48,7 @@ socket.on('newLocationMessage',function(message){
         url :message.url
     });
     $('#messages').append(html);
+    scrollToBottom();
     // li.text(`${message.from} ${formatedTimeLoc} : `);
     // a.attr('href',message.url);
     // li.append(a);
