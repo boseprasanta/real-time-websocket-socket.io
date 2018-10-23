@@ -14,12 +14,22 @@ function scrollToBottom(){
     }
 }
 socket.on('connect',()=>{
-    console.log("Server Connected.");
-    socket.emit('createEmail',{
-        to : 'prasanta@cashlu.com',
-        subject :  "Email Subject",
-        body : "Email Body"
+    let params = jQuery.deparam(window.location.search);
+
+    socket.emit('join',params,function(err){
+        if(err) {
+            window.location.href = '/';
+            alert(err);
+        } else {
+            console.log('No Error')
+        }
     });
+
+    // socket.emit('createEmail',{
+    //     to : 'prasanta@cashlu.com',
+    //     subject :  "Email Subject",
+    //     body : "Email Body"
+    // });
 });
 socket.on('disconnect',()=>{
     console.log("Server DisConnected.");
@@ -56,13 +66,21 @@ socket.on('newLocationMessage',function(message){
     // $('#messages').append(li);
 })
 
+socket.on('updateUserList',function(users){
+    var ol = jQuery('<ol></ol>');
+    users.forEach(function (user) {
+      ol.append(jQuery('<li></li>').text(user));
+    });
+    jQuery('#users').html(ol);
+});
+
 $('#message-form').on('submit',function(e){
     e.preventDefault();
 
     let messageTextBox = $('input[name="message"]');
 
     socket.emit('createMessage',{
-        from : "USER",
+        // from : "USER",
         text : messageTextBox.val()
     },(data)=>{
         messageTextBox.val('');
